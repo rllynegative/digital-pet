@@ -89,23 +89,44 @@ h1 { margin: 0; font-size: 1.22rem; line-height: 1; letter-spacing: .13em; }
 .target::before { top: 50%; left: -18px; right: -18px; height: 1px; }
 .target::after { top: -18px; bottom: -18px; left: 50%; width: 1px; }
 
+.pet-world { position: absolute; z-index: 0; inset: 0; color: #303030; pointer-events: none; }
+.pet-world pre { position: absolute; margin: 0; font: 700 .52rem/.72 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0; white-space: pre; }
+.pixel-sun { top: 40px; right: 42px; opacity: .7; }
+.pixel-cloud { opacity: .62; }
+.cloud-one { top: 72px; left: 27px; }
+.cloud-two { top: 105px; right: 24px; transform: scale(.78); transform-origin: right center; }
+.ground-line { position: absolute; right: 23px; bottom: 37px; left: 23px; height: 1px; background: repeating-linear-gradient(90deg, #343434 0 11px, transparent 11px 16px); opacity: .72; }
+.ground-line::before, .ground-line::after { content: ''; position: absolute; bottom: 0; width: 2px; height: 5px; background: #343434; }
+.ground-line::before { left: 18%; }
+.ground-line::after { right: 14%; }
+
 .pet {
   position: relative;
   z-index: 1;
   min-height: 216px;
-  margin: 0;
   display: grid;
   place-items: center;
-  color: var(--ink);
-  font: 800 1.08rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: .07em;
-  text-align: center;
-  text-shadow: 0 0 15px rgba(255,255,255,.18);
-  white-space: pre;
   filter: contrast(1.15);
   transition: transform .18s steps(2), color .18s ease;
   will-change: transform;
 }
+
+.pet-sprite {
+  --pixel-size: 6px;
+  display: grid;
+  grid-template-columns: repeat(var(--sprite-cols), var(--pixel-size));
+  grid-auto-rows: var(--pixel-size);
+  filter:
+    drop-shadow(1px 0 0 rgba(255,255,255,.9))
+    drop-shadow(-1px 0 0 rgba(255,255,255,.9))
+    drop-shadow(0 1px 0 rgba(255,255,255,.9))
+    drop-shadow(0 -1px 0 rgba(255,255,255,.9))
+    drop-shadow(0 0 8px rgba(255,255,255,.16));
+  image-rendering: pixelated;
+}
+.pixel { display: block; width: var(--pixel-size); height: var(--pixel-size); }
+.cat-pixel { background: #050505; }
+.detail-pixel { position: relative; z-index: 1; background: var(--ink); }
 
 .pet:not(.sleeping):not([class*="reaction-"]):not(.low-signal) {
   animation: entity-idle 2.8s steps(2, end) infinite;
@@ -239,7 +260,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (min-width: 700px) {
   .shell { padding-top: 32px; }
   .pet-screen, .pet { min-height: 232px; }
-  .pet { font-size: 1.18rem; }
+  .pet-sprite { --pixel-size: 7px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

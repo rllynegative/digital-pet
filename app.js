@@ -8,19 +8,107 @@
 
   const FORMS = [
     {
-      level: 1, name: 'FORM_01 // SPROUT',
-      art: ['    ▄▄▄    ', '  ▄█████▄  ', ' ▐█ ▀ ▀ █▌ ', ' ▐█  ▄  █▌ ', '  ▀█████▀  ', '   ▀ █ ▀   '].join('\n'),
-      blinkArt: ['    ▄▄▄    ', '  ▄█████▄  ', ' ▐█ ▄ ▄ █▌ ', ' ▐█  ▄  █▌ ', '  ▀█████▀  ', '   ▀ █ ▀   '].join('\n')
+      level: 1, name: 'FORM_01 // KITTEN',
+      art: [
+        '...XX....XX...',
+        '..XXXX..XXXX..',
+        '.XXXXXXXXXXXX.',
+        '.XXXWXXXXWXXX.',
+        '.XXXXXXXXXXXX.',
+        '..XXXXXWXXXX..',
+        '...XXXXXXXX...',
+        '....XXXXXX....',
+        '...XXXXXXXX...',
+        '...XXXXXXXX...',
+        '..XXX....XXX..',
+        '..XX......XX..'
+      ],
+      blinkArt: [
+        '...XX....XX...',
+        '..XXXX..XXXX..',
+        '.XXXXXXXXXXXX.',
+        '.XXXWWXXWWXXX.',
+        '.XXXXXXXXXXXX.',
+        '..XXXXXWXXXX..',
+        '...XXXXXXXX...',
+        '....XXXXXX....',
+        '...XXXXXXXX...',
+        '...XXXXXXXX...',
+        '..XXX....XXX..',
+        '..XX......XX..'
+      ]
     },
     {
-      level: 3, name: 'FORM_02 // SIGNAL',
-      art: [' ▄▄     ▄▄ ', '████▄▄▄████', '██ ▀   ▀ ██', '██   ▄   ██', ' ▀██▄▄▄██▀ ', '  ▀█ █ █▀  '].join('\n'),
-      blinkArt: [' ▄▄     ▄▄ ', '████▄▄▄████', '██ ▄   ▄ ██', '██   ▄   ██', ' ▀██▄▄▄██▀ ', '  ▀█ █ █▀  '].join('\n')
+      level: 3, name: 'FORM_02 // SHADOW',
+      art: [
+        '..XXX........XXX..',
+        '.XXXXX......XXXXX.',
+        'XXXXXXXXXXXXXXXXXX',
+        'XXXXWXXXXXXXXWXXXX',
+        'XXXXXXXXXXXXXXXXXX',
+        '.XXXXXXXWWXXXXXXX.',
+        '..XXXXXXXXXXXXXX..',
+        '....XXXXXXXXXX....',
+        '...XXXXXXXXXXXX...',
+        '..XXXXXXXXXXXXXX..',
+        '..XXXX......XXXX..',
+        '.XXXX........XXXX.',
+        '.............XXXX.',
+        '..............XXX.'
+      ],
+      blinkArt: [
+        '..XXX........XXX..',
+        '.XXXXX......XXXXX.',
+        'XXXXXXXXXXXXXXXXXX',
+        'XXXXWWXXXXXXWWXXXX',
+        'XXXXXXXXXXXXXXXXXX',
+        '.XXXXXXXWWXXXXXXX.',
+        '..XXXXXXXXXXXXXX..',
+        '....XXXXXXXXXX....',
+        '...XXXXXXXXXXXX...',
+        '..XXXXXXXXXXXXXX..',
+        '..XXXX......XXXX..',
+        '.XXXX........XXXX.',
+        '.............XXXX.',
+        '..............XXX.'
+      ]
     },
     {
-      level: 6, name: 'FORM_03 // VOID',
-      art: ['▄██▄   ▄██▄', '███████████', '██ ▄   ▄ ██', '██   ▀   ██', '▀██▄▄▄▄▄██▀', ' ▀█▄ █ ▄█▀ '].join('\n'),
-      blinkArt: ['▄██▄   ▄██▄', '███████████', '██ ▀   ▀ ██', '██   ▀   ██', '▀██▄▄▄▄▄██▀', ' ▀█▄ █ ▄█▀ '].join('\n')
+      level: 6, name: 'FORM_03 // VOIDCAT',
+      art: [
+        '.XXXX..........XXXX.',
+        'XXXXXX........XXXXXX',
+        'XXXXXXXXXXXXXXXXXXXX',
+        'XXXXXWXXXXXXXXWXXXXX',
+        'XXXXXXXXXXXXXXXXXXXX',
+        '.XXXXXXXXWWXXXXXXXX.',
+        '..XXXXXXXXXXXXXXXX..',
+        '....XXXXXXXXXXXX....',
+        '..XXXXXXXXXXXXXXXX..',
+        '.XXXXXXXXXXXXXXXXXX.',
+        '.XXXXX........XXXXX.',
+        'XXXXX..........XXXXX',
+        'XXXX............XXXX',
+        'XXX..........XXXXXXX',
+        '.XXX........XXX..XXX'
+      ],
+      blinkArt: [
+        '.XXXX..........XXXX.',
+        'XXXXXX........XXXXXX',
+        'XXXXXXXXXXXXXXXXXXXX',
+        'XXXXXWWXXXXXXWWXXXXX',
+        'XXXXXXXXXXXXXXXXXXXX',
+        '.XXXXXXXXWWXXXXXXXX.',
+        '..XXXXXXXXXXXXXXXX..',
+        '....XXXXXXXXXXXX....',
+        '..XXXXXXXXXXXXXXXX..',
+        '.XXXXXXXXXXXXXXXXXX.',
+        '.XXXXX........XXXXX.',
+        'XXXXX..........XXXXX',
+        'XXXX............XXXX',
+        'XXX..........XXXXXXX',
+        '.XXX........XXX..XXX'
+      ]
     }
   ];
 
@@ -129,10 +217,18 @@
     return 'AWAKE // CURIOUS';
   }
 
+  function renderSprite(rows) {
+    els.pet.innerHTML = `<span class="pet-sprite" style="--sprite-cols:${rows[0].length}">${rows.join('').split('').map((pixel) => {
+      if (pixel === 'X') return '<i class="pixel cat-pixel"></i>';
+      if (pixel === 'W') return '<i class="pixel detail-pixel"></i>';
+      return '<i class="pixel"></i>';
+    }).join('')}</span>`;
+  }
+
   function render() {
     const form = formForLevel(state.level);
     const day = Math.floor((Date.now() - state.createdAt) / DAY_MS) + 1;
-    els.pet.textContent = form.art;
+    renderSprite(form.art);
     els.pet.classList.toggle('sleeping', state.sleeping);
     els.pet.classList.toggle('low-signal', state.mood < 35 || state.energy < 20);
     els.evolution.textContent = form.name;
@@ -168,11 +264,11 @@
     blinkTimer = setTimeout(() => {
       if (!state.sleeping) {
         const form = formForLevel(state.level);
-        els.pet.textContent = form.blinkArt;
+        renderSprite(form.blinkArt);
         els.pet.classList.add('is-blinking');
         clearTimeout(blinkRestoreTimer);
         blinkRestoreTimer = setTimeout(() => {
-          els.pet.textContent = formForLevel(state.level).art;
+          renderSprite(formForLevel(state.level).art);
           els.pet.classList.remove('is-blinking');
         }, 130);
       }
