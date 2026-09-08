@@ -13,14 +13,30 @@
     <link rel="stylesheet" href="./styles.css" />
     <title>DIGITAL PET</title>
   </head>
-  <body>
+  <body class="booting">
+    <section id="boot" class="boot" aria-label="System startup">
+      <div class="boot-grid" aria-hidden="true"></div>
+      <div class="boot-console">
+        <div class="boot-mark"><span>V</span><i></i></div>
+        <p class="boot-kicker">VYRA // ENTITY OS</p>
+        <h2>VYRA // ONLINE</h2>
+        <div class="boot-lines" aria-live="polite">
+          <p><span>01</span>SYSTEM STATUS <b>NOMINAL</b></p>
+          <p><span>02</span>ENTITY LINK <b>ESTABLISHED</b></p>
+          <p><span>03</span>POCKET ENTITY <b>READY</b></p>
+        </div>
+        <div class="boot-progress"><i></i></div>
+        <button id="skipBoot" class="boot-skip" type="button">SKIP // ENTER</button>
+      </div>
+    </section>
+
     <main class="shell" aria-labelledby="app-title">
       <header class="topbar">
         <div>
-          <p class="eyebrow">VYRA // POCKET ENTITY</p>
+          <p class="eyebrow">VYRA.OS // ENTITY_01</p>
           <h1 id="app-title">DIGITAL PET</h1>
         </div>
-        <div class="signal" aria-label="System online"><span></span>ONLINE</div>
+        <div class="signal" aria-label="System online"><span></span>LINKED</div>
       </header>
 
       <section class="pet-card" aria-label="Pet status">
@@ -30,12 +46,19 @@
           <span id="age">DAY 001</span>
         </div>
 
-        <pre id="pet" class="pet" role="img" aria-label="NOVA, your digital pet"></pre>
+        <div class="pet-screen">
+          <span class="screen-label top-left">SCAN // ACTIVE</span>
+          <span class="screen-label top-right">X:01 Y:01</span>
+          <span class="screen-label bottom-left">ENTITY_SIG</span>
+          <span class="screen-label bottom-right">SYNC_100</span>
+          <div class="target" aria-hidden="true"></div>
+          <pre id="pet" class="pet" role="img" aria-label="NOVA, your digital pet"></pre>
+        </div>
 
         <div class="identity">
           <div>
             <p class="pet-name">NØVA</p>
-            <p id="statusText" class="status-text">AWAKE // CURIOUS</p>
+            <p id="statusText" class="status-text"><span></span>AWAKE // CURIOUS</p>
           </div>
           <div class="level-block">
             <span>LVL</span>
@@ -64,9 +87,11 @@
       </section>
 
       <section class="log-panel" aria-labelledby="log-title">
-        <div class="log-head"><h2 id="log-title">SYSTEM LOG</h2><span>LOCAL MEMORY</span></div>
+        <div class="log-head"><h2 id="log-title">SYSTEM LOG</h2><span>MEM://LOCAL</span></div>
         <ol id="log" aria-live="polite"></ol>
       </section>
+
+      <footer class="footer-line"><span>VYRA_POENT v1.1</span><span>NO NETWORK REQUIRED</span></footer>
     </main>
 
     <script src="./app.js" defer></script>

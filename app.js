@@ -4,11 +4,12 @@
   const STORAGE_KEY = 'digital-pet-state-v1';
   const DAY_MS = 86_400_000;
   const TICK_MS = 60_000;
+  const BOOT_KEY = 'digital-pet-booted-v1';
 
   const FORMS = [
-    { level: 1, name: 'FORM_01 // SPROUT', art: ['    .-.', '   (o o)', '  /| _ |\\', '   /   \\', '  /_____\\'].join('\n') },
-    { level: 3, name: 'FORM_02 // SIGNAL', art: ['   /\\_/\\', '  ( o.o )', '   > ^ <', '  /|___|\\', '   /   \\'].join('\n') },
-    { level: 6, name: 'FORM_03 // VOID', art: ['  /\\_____/\\', ' /  ◇   ◇  \\', '(     ^     )', ' \\  _____  /', '  \\/|___|\\/'].join('\n') }
+    { level: 1, name: 'FORM_01 // SPROUT', art: ['    ▄▄▄    ', '  ▄█████▄  ', ' ▐█ ▀ ▀ █▌ ', ' ▐█  ▄  █▌ ', '  ▀█████▀  ', '   ▀ █ ▀   '].join('\n') },
+    { level: 3, name: 'FORM_02 // SIGNAL', art: [' ▄▄     ▄▄ ', '████▄▄▄████', '██ ▀   ▀ ██', '██   ▄   ██', ' ▀██▄▄▄██▀ ', '  ▀█ █ █▀  '].join('\n') },
+    { level: 6, name: 'FORM_03 // VOID', art: ['▄██▄   ▄██▄', '███████████', '██ ▄   ▄ ██', '██   ▀   ██', '▀██▄▄▄▄▄██▀', ' ▀█▄ █ ▄█▀ '].join('\n') }
   ];
 
   const DEFAULT_STATE = {
@@ -55,6 +56,23 @@
   }
 
   let state = loadState();
+
+  const boot = document.querySelector('#boot');
+  const skipBoot = document.querySelector('#skipBoot');
+
+  function finishBoot() {
+    document.body.classList.remove('booting');
+    boot.classList.add('hidden');
+    try { sessionStorage.setItem(BOOT_KEY, '1'); } catch {}
+  }
+
+  let bootedThisSession = false;
+  try { bootedThisSession = sessionStorage.getItem(BOOT_KEY) === '1'; } catch {}
+  if (bootedThisSession) finishBoot();
+  else {
+    skipBoot.addEventListener('click', finishBoot);
+    setTimeout(finishBoot, 1950);
+  }
 
   const els = {
     pet: document.querySelector('#pet'), evolution: document.querySelector('#evolution'),
