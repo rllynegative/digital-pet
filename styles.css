@@ -104,11 +104,50 @@ h1 { margin: 0; font-size: 1.22rem; line-height: 1; letter-spacing: .13em; }
   white-space: pre;
   filter: contrast(1.15);
   transition: transform .18s steps(2), color .18s ease;
+  will-change: transform;
 }
 
-.pet.react { transform: translateY(-6px) scale(1.035); color: var(--accent); }
+.pet:not(.sleeping):not([class*="reaction-"]):not(.low-signal) {
+  animation: entity-idle 2.8s steps(2, end) infinite;
+}
+.pet.is-blinking { transform: scaleY(.985); }
+.pet.reaction-pet { animation: entity-happy .52s steps(4, end); }
+.pet.reaction-feed { animation: entity-eat .52s steps(4, end); }
+.pet.reaction-play { animation: entity-play .7s steps(6, end); }
+.pet.reaction-sleep { animation: entity-tired .55s steps(4, end); }
+.pet.low-signal:not([class*="reaction-"]) { animation: signal-glitch 2.6s steps(1, end) infinite; }
 .pet.sleeping { opacity: .62; animation: breathe 2.4s ease-in-out infinite; }
-@keyframes breathe { 50% { transform: scale(.97); } }
+@keyframes entity-idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes entity-happy {
+  0%, 100% { transform: translateY(0) scale(1); }
+  28% { transform: translateY(-8px) scale(1.035); }
+  56% { transform: translateY(0) scaleX(1.06) scaleY(.96); }
+}
+@keyframes entity-eat {
+  0%, 100% { transform: scale(1); }
+  22%, 62% { transform: scaleX(1.06) scaleY(.94); }
+  42%, 82% { transform: scaleX(.97) scaleY(1.035); }
+}
+@keyframes entity-play {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  18% { transform: translate(-7px, -7px) rotate(-2deg); }
+  42% { transform: translate(7px, 0) rotate(2deg); }
+  66% { transform: translate(-4px, -5px) rotate(-1deg); }
+}
+@keyframes entity-tired {
+  0%, 100% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(4px) scaleY(.92); }
+  70% { transform: translateY(2px) scaleX(1.035); }
+}
+@keyframes signal-glitch {
+  0%, 8%, 12%, 49%, 53%, 100% { transform: translate(0); opacity: 1; filter: contrast(1.15); }
+  9% { transform: translateX(2px); opacity: .62; filter: contrast(1.8); }
+  50% { transform: translateX(-2px); opacity: .72; filter: contrast(1.55); }
+}
+@keyframes breathe { 50% { transform: translateY(3px) scaleY(.96); } }
 
 .identity { padding: 13px 3px 2px; }
 .pet-name { margin: 0 0 5px; font-size: 1.05rem; font-weight: 800; letter-spacing: .16em; }
@@ -205,4 +244,5 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .pet { animation: none !important; transform: none !important; will-change: auto; }
 }

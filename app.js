@@ -7,9 +7,21 @@
   const BOOT_KEY = 'digital-pet-booted-v1';
 
   const FORMS = [
-    { level: 1, name: 'FORM_01 // SPROUT', art: ['    ▄▄▄    ', '  ▄█████▄  ', ' ▐█ ▀ ▀ █▌ ', ' ▐█  ▄  █▌ ', '  ▀█████▀  ', '   ▀ █ ▀   '].join('\n') },
-    { level: 3, name: 'FORM_02 // SIGNAL', art: [' ▄▄     ▄▄ ', '████▄▄▄████', '██ ▀   ▀ ██', '██   ▄   ██', ' ▀██▄▄▄██▀ ', '  ▀█ █ █▀  '].join('\n') },
-    { level: 6, name: 'FORM_03 // VOID', art: ['▄██▄   ▄██▄', '███████████', '██ ▄   ▄ ██', '██   ▀   ██', '▀██▄▄▄▄▄██▀', ' ▀█▄ █ ▄█▀ '].join('\n') }
+    {
+      level: 1, name: 'FORM_01 // SPROUT',
+      art: ['    ▄▄▄    ', '  ▄█████▄  ', ' ▐█ ▀ ▀ █▌ ', ' ▐█  ▄  █▌ ', '  ▀█████▀  ', '   ▀ █ ▀   '].join('\n'),
+      blinkArt: ['    ▄▄▄    ', '  ▄█████▄  ', ' ▐█ ▄ ▄ █▌ ', ' ▐█  ▄  █▌ ', '  ▀█████▀  ', '   ▀ █ ▀   '].join('\n')
+    },
+    {
+      level: 3, name: 'FORM_02 // SIGNAL',
+      art: [' ▄▄     ▄▄ ', '████▄▄▄████', '██ ▀   ▀ ██', '██   ▄   ██', ' ▀██▄▄▄██▀ ', '  ▀█ █ █▀  '].join('\n'),
+      blinkArt: [' ▄▄     ▄▄ ', '████▄▄▄████', '██ ▄   ▄ ██', '██   ▄   ██', ' ▀██▄▄▄██▀ ', '  ▀█ █ █▀  '].join('\n')
+    },
+    {
+      level: 6, name: 'FORM_03 // VOID',
+      art: ['▄██▄   ▄██▄', '███████████', '██ ▄   ▄ ██', '██   ▀   ██', '▀██▄▄▄▄▄██▀', ' ▀█▄ █ ▄█▀ '].join('\n'),
+      blinkArt: ['▄██▄   ▄██▄', '███████████', '██ ▀   ▀ ██', '██   ▀   ██', '▀██▄▄▄▄▄██▀', ' ▀█▄ █ ▄█▀ '].join('\n')
+    }
   ];
 
   const DEFAULT_STATE = {
@@ -80,6 +92,9 @@
     status: document.querySelector('#statusText'), xpText: document.querySelector('#xpText'),
     xpBar: document.querySelector('#xpBar'), log: document.querySelector('#log')
   };
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  let blinkTimer;
+  let blinkRestoreTimer;
 
   function formForLevel(level) {
     return [...FORMS].reverse().find((form) => level >= form.level) || FORMS[0];
@@ -119,6 +134,7 @@
     const day = Math.floor((Date.now() - state.createdAt) / DAY_MS) + 1;
     els.pet.textContent = form.art;
     els.pet.classList.toggle('sleeping', state.sleeping);
+    els.pet.classList.toggle('low-signal', state.mood < 35 || state.energy < 20);
     els.evolution.textContent = form.name;
     els.age.textContent = `DAY ${String(day).padStart(3, '0')}`;
     els.level.textContent = String(state.level).padStart(2, '0');
@@ -135,6 +151,33 @@
       ? '<span>04</span>WAKE'
       : '<span>04</span>SLEEP';
     els.log.innerHTML = state.logs.map((entry) => `<li><time>[${entry.time}]</time> ${entry.text}</li>`).join('');
+  }
+
+  function triggerReaction(action) {
+    if (reducedMotion) return;
+    const reactionClass = `reaction-${action}`;
+    els.pet.classList.remove('reaction-feed', 'reaction-pet', 'reaction-play', 'reaction-sleep');
+    void els.pet.offsetWidth;
+    els.pet.classList.add(reactionClass);
+    setTimeout(() => els.pet.classList.remove(reactionClass), action === 'play' ? 720 : 560);
+  }
+
+  function scheduleBlink() {
+    if (reducedMotion) return;
+    clearTimeout(blinkTimer);
+    blinkTimer = setTimeout(() => {
+      if (!state.sleeping) {
+        const form = formForLevel(state.level);
+        els.pet.textContent = form.blinkArt;
+        els.pet.classList.add('is-blinking');
+        clearTimeout(blinkRestoreTimer);
+        blinkRestoreTimer = setTimeout(() => {
+          els.pet.textContent = formForLevel(state.level).art;
+          els.pet.classList.remove('is-blinking');
+        }, 130);
+      }
+      scheduleBlink();
+    }, 3200 + Math.random() * 4200);
   }
 
   const actions = {
@@ -186,14 +229,15 @@
       save();
       render();
       button.classList.add('active');
-      els.pet.classList.add('react');
-      setTimeout(() => { button.classList.remove('active'); els.pet.classList.remove('react'); }, 180);
+      triggerReaction(action);
+      setTimeout(() => button.classList.remove('active'), 180);
     });
   });
 
   if (!state.logs.length) addLog('NØVA CORE INITIALIZED.');
   save();
   render();
+  scheduleBlink();
 
   setInterval(() => {
     state.hunger = clamp(state.hunger - 1);
