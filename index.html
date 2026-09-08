@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="DIGITAL PET" />
+    <meta name="description" content="A tiny offline virtual companion." />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>DIGITAL PET</title>
+  </head>
+  <body>
+    <main class="shell" aria-labelledby="app-title">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">VYRA // POCKET ENTITY</p>
+          <h1 id="app-title">DIGITAL PET</h1>
+        </div>
+        <div class="signal" aria-label="System online"><span></span>ONLINE</div>
+      </header>
+
+      <section class="pet-card" aria-label="Pet status">
+        <div class="scanline" aria-hidden="true"></div>
+        <div class="pet-meta">
+          <span id="evolution">FORM_01 // SPROUT</span>
+          <span id="age">DAY 001</span>
+        </div>
+
+        <pre id="pet" class="pet" role="img" aria-label="NOVA, your digital pet"></pre>
+
+        <div class="identity">
+          <div>
+            <p class="pet-name">NØVA</p>
+            <p id="statusText" class="status-text">AWAKE // CURIOUS</p>
+          </div>
+          <div class="level-block">
+            <span>LVL</span>
+            <strong id="level">01</strong>
+          </div>
+        </div>
+
+        <div class="xp-row">
+          <span>XP <b id="xpText">0 / 100</b></span>
+          <div class="track"><i id="xpBar"></i></div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="Pet statistics">
+        <div class="stat"><span>HUNGER</span><b id="hungerValue">80</b><div class="track"><i id="hungerBar"></i></div></div>
+        <div class="stat"><span>ENERGY</span><b id="energyValue">70</b><div class="track"><i id="energyBar"></i></div></div>
+        <div class="stat"><span>BOND</span><b id="bondValue">25</b><div class="track"><i id="bondBar"></i></div></div>
+        <div class="stat"><span>MOOD</span><b id="moodValue">65</b><div class="track"><i id="moodBar"></i></div></div>
+      </section>
+
+      <section class="actions" aria-label="Pet actions">
+        <button type="button" data-action="feed"><span>01</span>FEED</button>
+        <button type="button" data-action="pet"><span>02</span>PET</button>
+        <button type="button" data-action="play"><span>03</span>PLAY</button>
+        <button type="button" data-action="sleep"><span>04</span>SLEEP</button>
+      </section>
+
+      <section class="log-panel" aria-labelledby="log-title">
+        <div class="log-head"><h2 id="log-title">SYSTEM LOG</h2><span>LOCAL MEMORY</span></div>
+        <ol id="log" aria-live="polite"></ol>
+      </section>
+    </main>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
