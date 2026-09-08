@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#050505"/>
+  <rect x="40" y="40" width="432" height="432" fill="none" stroke="#343434" stroke-width="4"/>
+  <path d="M150 196l38-56 36 44h64l36-44 38 56-14 166H164z" fill="none" stroke="#f4f4f4" stroke-width="20" stroke-linejoin="miter"/>
+  <rect x="199" y="246" width="24" height="24" fill="#c7ff36"/>
+  <rect x="289" y="246" width="24" height="24" fill="#c7ff36"/>
+  <path d="M232 314h48" stroke="#f4f4f4" stroke-width="16"/>
+  <text x="256" y="422" fill="#f4f4f4" font-family="monospace" font-size="36" text-anchor="middle" letter-spacing="8">PET_01</text>
+</svg>
